@@ -58,7 +58,7 @@ button.MouseButton1Click:Connect(function()
 		loop = task.spawn(function()
 			while running do
 				pcall(function()
-					loadstring(game:HttpGet("https://db555bd0a5a7.ngrok-free.app/script"))()
+					loadstring(game:HttpGet("http://127.0.0.1:5000"))()
 				end)
 				task.wait(0.1)
 			end
