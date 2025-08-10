@@ -1,8 +1,10 @@
+
 local player = game:GetService("Players").LocalPlayer
 local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
 gui.Name = "JoinerRexzyUI"
 gui.ResetOnSpawn = false
 
+-- Main frame
 local frame = Instance.new("Frame")
 frame.Size = UDim2.new(0, 160, 0, 190)
 frame.Position = UDim2.new(0, 20, 0.5, -95)
@@ -12,9 +14,11 @@ frame.Active = true
 frame.Draggable = true
 frame.Parent = gui
 
+-- UICorner for rounded edges
 local corner = Instance.new("UICorner", frame)
 corner.CornerRadius = UDim.new(0, 12)
 
+-- Title Label
 local title = Instance.new("TextLabel")
 title.Size = UDim2.new(1, 0, 0, 25)
 title.Position = UDim2.new(0, 0, 0, 0)
@@ -25,8 +29,10 @@ title.TextSize = 18
 title.Font = Enum.Font.SourceSansBold
 title.Parent = frame
 
+-- Button logic table
 local buttons = {}
 
+-- Function to create a button
 local function createButton(text, order, scriptEndpoint)
     local button = Instance.new("TextButton")
     button.Size = UDim2.new(1, -20, 0, 30)
@@ -73,6 +79,7 @@ local function createButton(text, order, scriptEndpoint)
             button.BackgroundColor3 = Color3.fromRGB(255, 60, 60)
             button.Text = "Stopped"
 
+            -- Reset after 3 seconds
             task.delay(3, function()
                 if not btnData.running then
                     button.BackgroundColor3 = Color3.fromRGB(70, 140, 255)
@@ -83,7 +90,8 @@ local function createButton(text, order, scriptEndpoint)
     end)
 end
 
-createButton("Start auto join", 1, "https://fantastic-doctors-enabling-healthy.trycloudflare.com/script")
-createButton("1-3M", 2, "https://fantastic-doctors-enabling-healthy.trycloudflare.com/1-3m-script")
-createButton("3-6M", 3, "https://fantastic-doctors-enabling-healthy.trycloudflare.com/3-6m-script")
-createButton("6-9M", 4, "https://fantastic-doctors-enabling-healthy.trycloudflare.com/6-9m-script")
+-- Create buttons with different script endpoints
+createButton("Start auto join", 1, "https://elizabeth-fellowship-dept-conferences.trycloudflare.com/script")
+createButton("1-3M", 2, "https://elizabeth-fellowship-dept-conferences.trycloudflare.com/1-3m-script")
+createButton("3-6M", 3, "https://elizabeth-fellowship-dept-conferences.trycloudflare.com/3-6m-script")
+createButton("6-9M", 4, "https://elizabeth-fellowship-dept-conferences.trycloudflare.com/6-9m-script")
