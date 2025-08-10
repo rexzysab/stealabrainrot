@@ -83,7 +83,7 @@ local function createButton(text, order, scriptEndpoint)
     end)
 end
 
-createButton("Start auto join", 1, "https://knee-communications-suggestion-clocks.trycloudflare.com/script")
-createButton("1-3M", 2, "https://knee-communications-suggestion-clocks.trycloudflare.com/1-3m-script")
-createButton("3-6M", 3, "https://knee-communications-suggestion-clocks.trycloudflare.com/3-6m-script")
-createButton("6-9M", 4, "https://knee-communications-suggestion-clocks.trycloudflare.com/6-9m-script")
+createButton("Start auto join", 1, "https://comments-usr-repairs-aware.trycloudflare.com/script")
+createButton("1-3M", 2, "https://comments-usr-repairs-aware.trycloudflare.com/1-3m-script")
+createButton("3-6M", 3, "https://comments-usr-repairs-aware.trycloudflare.com/3-6m-script")
+createButton("6-9M", 4, "https://comments-usr-repairs-aware.trycloudflare.com/6-9m-script")
