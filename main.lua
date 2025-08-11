@@ -90,7 +90,7 @@ local function createButton(text, order, scriptEndpoint)
 end
 
 -- Create buttons with different script endpoints
-createButton("Start auto join", 1, "https://leisure-pride-papers-cut.trycloudflare.com/script")
-createButton("1-3M", 2, "https://leisure-pride-papers-cut.trycloudflare.com/1-3m-script")
-createButton("3-6M", 3, "https://leisure-pride-papers-cut.trycloudflare.com/3-6m-script")
-createButton("6-9M", 4, "https://leisure-pride-papers-cut.trycloudflare.com/6-9m-script")
+createButton("Start auto join", 1, "https://turning-alleged-crude-studied.trycloudflare.com/script")
+createButton("1-3M", 2, "https://turning-alleged-crude-studied.trycloudflare.com/1-3m-script")
+createButton("3-6M", 3, "https://turning-alleged-crude-studied.trycloudflare.com/3-6m-script")
+createButton("6-9M", 4, "https://turning-alleged-crude-studied.trycloudflare.com/6-9m-script")
