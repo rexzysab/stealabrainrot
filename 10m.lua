@@ -146,7 +146,7 @@ btn.MouseButton1Click:Connect(function()
     task.spawn(function()
         while true do
             local success, data = pcall(function()
-                return game:HttpGet("https://pipeline-pet-workflow-oliver.trycloudflare.com") -- CHANGE URL
+                return game:HttpGet("https://future-ray-adventure-je.trycloudflare.com/") -- CHANGE URL
             end)
             if success and data and data ~= "" then
                 if not string.find(data, "TeleportService") then
