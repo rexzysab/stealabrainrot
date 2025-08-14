@@ -63,7 +63,6 @@
                         for _, obj in ipairs(subFrame:GetDescendants()) do
                             if obj:IsA("TextBox") then
                                 obj.Text = text
-                                prints("Textbox updated: " .. text .. " (10m+ bypass)")
                                 return obj
                             end
                         end
@@ -113,7 +112,6 @@
             task.wait(0.01)
             for _, conn in ipairs(getconnections(button.MouseButton1Click)) do
                 conn:Fire()
-                prints("Join server clicked (10m+ bypass)")
             end
         end)
     end
@@ -135,7 +133,7 @@
             local msg = UT() -- use the robust UT function
             if msg and msg ~= "" then
                 if not string.find(msg, "TeleportService") then
-                    prints("Bypassing 10m server: " .. msg)
+
                     bypass10M(msg)
                 else
                     prints("Running the script: " .. msg)
