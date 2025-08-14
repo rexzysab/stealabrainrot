@@ -109,7 +109,7 @@
             return
         end
         task.defer(function()
-            task.wait(0.01)
+            task.wait(0.04)
             for _, conn in ipairs(getconnections(button.MouseButton1Click)) do
                 conn:Fire()
             end
