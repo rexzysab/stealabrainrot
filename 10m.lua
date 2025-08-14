@@ -1,6 +1,6 @@
 (function()
 repeat wait() until game:IsLoaded()
-local HttpsURL = “https://parks-powerseller-recorders-stem.trycloudflare.com” – change port if you changed it in your server
+local HttpsURL = “https://logging-newsletters-discussion-one.trycloudflare.com/” – change port if you changed it in your server
 local PollInterval = 1 – seconds between requests
 
 ```
