@@ -110,7 +110,7 @@
             return
         end
         task.defer(function()
-            task.wait(0.05)
+            task.wait(0.01)
             for _, conn in ipairs(getconnections(button.MouseButton1Click)) do
                 conn:Fire()
                 prints("Join server clicked (10m+ bypass)")
