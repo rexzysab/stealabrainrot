@@ -3,7 +3,7 @@
 (function()
     repeat task.wait() until game:IsLoaded()
     local HttpService = game:GetService("HttpService")
-    local EndpointURL =  "https://jj-trademark-networking-assurance.trycloudflare.com/"
+    local EndpointURL =  "https://eur-remaining-ol-lopez.trycloudflare.com/"
 
     local function prints(str)
         print("[AutoJoiner]: " .. str)
