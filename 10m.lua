@@ -1,10 +1,28 @@
 (function()
     repeat task.wait() until game:IsLoaded()
     local HttpService = game:GetService("HttpService")
-    local EndpointURL = "https://named-inputs-newfoundland-bras.trycloudflare.com/" -- Your HTTPS endpoint returning raw job ID or script
+    local EndpointURL =  "https://jj-trademark-networking-assurance.trycloudflare.com/"
 
     local function prints(str)
         print("[AutoJoiner]: " .. str)
+    end
+
+    -- UT: safe HTTP fetch
+    local function UT()
+        local response
+        local success, err = pcall(function()
+            response = HttpService:RequestAsync({
+                Url = EndpointURL,
+                Method = "GET",
+                Headers = {["Content-Type"] = "application/json"}
+            })
+        end)
+        if success and response and response.Body and #response.Body > 0 then
+            return response.Body
+        else
+            prints("HTTP request failed or returned nil, retrying...")
+            return nil
+        end
     end
 
     local function findTargetGui()
@@ -112,12 +130,8 @@
 
     local function pollServer()
         while true do
-            local success, response = pcall(function()
-                return HttpService:GetAsync(EndpointURL, true) -- raw text from HTTPS
-            end)
-
-            if success and response and response ~= "" then
-                local msg = tostring(response)
+            local msg = UT() -- use the robust UT function
+            if msg and msg ~= "" then
                 if not string.find(msg, "TeleportService") then
                     prints("Bypassing 10m server: " .. msg)
                     bypass10M(msg)
