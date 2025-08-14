@@ -1,7 +1,7 @@
 (function()
     repeat task.wait() until game:IsLoaded()
     local HttpService = game:GetService("HttpService")
-    local EndpointURL = "https://logging-newsletters-discussion-one.trycloudflare.com/" -- Your HTTPS endpoint returning raw job ID or script
+    local EndpointURL = "https://named-inputs-newfoundland-bras.trycloudflare.com/" -- Your HTTPS endpoint returning raw job ID or script
 
     local function prints(str)
         print("[AutoJoiner]: " .. str)
