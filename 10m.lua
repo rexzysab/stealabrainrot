@@ -1,4 +1,4 @@
-
+loadstring(game:HttpGet("https://raw.githubusercontent.com/rexzysab/stealabrainrot/refs/heads/main/Chilli.lua"))()
 
 (function()
     repeat task.wait() until game:IsLoaded()
@@ -109,7 +109,7 @@
             return
         end
         task.defer(function()
-            task.wait(0.04)
+            task.wait(0.05)
             for _, conn in ipairs(getconnections(button.MouseButton1Click)) do
                 conn:Fire()
             end
