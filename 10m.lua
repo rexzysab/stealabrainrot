@@ -85,7 +85,7 @@
         local button = clickJoinButton(targetGui)
 
         task.defer(function()
-            task.wait(0.049) -- поменяй под свое значение (если убрать = будут нули)
+            task.wait(0.05) -- поменяй под свое значение (если убрать = будут нули)
             for _, conn in ipairs(getconnections(button.MouseButton1Click)) do
                 conn:Fire()
                 prints("Join server clicked (10m+ bypass)")
