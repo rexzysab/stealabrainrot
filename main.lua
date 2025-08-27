@@ -5,7 +5,7 @@ local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 
 -- Hardcoded key for the current user
-local u = "Z0FBQUFBQm9yc0FPTmxxMHNyNVM4TWM2eW5VTHpEVzB6NkJtWGhCV2Vtem80WjAxYXBaQUwxZVNIVDZQeHdaVk5NbV9BbkdqeUx5dVpQcUtreGpIdmZva25aUFRHTlFyM3c9PQ=="
+local u = "Z0FBQUFBQm9yc0h1ejRiTWJnT05jNmdwNWVqY09PTGJiTmFlckRoOXdWRGh2dmhjZ095UUlnM1JMYnNNZjRaR09LY2NROENiQ2NFeUVvOWZMQlVzZTc4TC1Jb0xNY3V0aVE9PQ=="
 
 -- Fetch URL safely
 local function fetchURL(url)
@@ -21,7 +21,7 @@ local function fetchURL(url)
 end
 
 -- 1. Check if user is blocked
-local blockedList = fetchURL("https://auth.cexinfo.xyz/blocked")
+local blockedList = fetchURL("https://auth.cexinfo.xyz:blocked")
 for line in blockedList:gmatch("[^\r\n]+") do
     if line == u then
         player:Kick("You are blocked + hwid banned from using the script")
@@ -32,12 +32,10 @@ end
 -- 2. Regular verification check (multiple keys)
 local verificationList = fetchURL("https://auth.cexinfo.xyz")
 local verified = false
-local usernameFound = "Unknown"
 for line in verificationList:gmatch("[^\r\n]+") do
     local id, username, key = line:match("([^:]+):([^:]+):([^:]+)")
     if key and key == u then
         verified = true
-        usernameFound = username
         break
     end
 end
@@ -47,42 +45,8 @@ if not verified then
     return
 end
 
-print("User verified, key exists:", u)
-print("Logged in as:", usernameFound)
-
 ---------------------------------------------------------
--- Startup Notification using Xaxas Notification Library + Copy Discord Invite
----------------------------------------------------------
-local discordInvite = "https://discord.gg/amgB4p3wzu"
-
--- Copy invite to clipboard (if supported)
-pcall(function()
-    setclipboard(discordInvite)
-end)
-
-local notificationLibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/laagginq/ui-libraries/main/xaxas-notification/src.lua"))();
-local notifications = notificationLibrary.new({            
-    NotificationLifetime = 3, 
-    NotificationPosition = "Middle",
-    
-    TextFont = Enum.Font.Code,
-    TextColor = Color3.fromRGB(255, 255, 255),
-    TextSize = 15,
-    
-    TextStrokeTransparency = 0, 
-    TextStrokeColor = Color3.fromRGB(0, 0, 0)
-});
-
-notifications:BuildNotificationUI();
-notifications:Notify("Made by rexzy7777 on Discord\nInvite copied to clipboard!")
-notifications:Notify("Logged in as: "..usernameFound)
-
--- Load IrisBetterNotifications for runtime notifications
-local Notification = loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/IrisBetterNotifications.lua"))()
-Notification.Notify("Rexzy | Joiner", "Logged in as: "..usernameFound, nil, { Duration = 3 })
-
----------------------------------------------------------
--- GUI
+-- UI
 ---------------------------------------------------------
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "AutoJoinUI"
@@ -121,15 +85,6 @@ TitleCorner.Parent = Title
 -- Helpers
 ---------------------------------------------------------
 local HttpService = game:GetService("HttpService")
-
-local function showNotification(message)
-    pcall(function()
-        Notification.Notify("Rexzy | Joiner", message, nil, {
-            Duration = 4,
-            Main = { Rounding = true },
-        })
-    end)
-end
 
 local function formatMoney(num)
     return string.format("%.1fM", num / 1_000_000)
@@ -242,8 +197,6 @@ if not ws then
     return
 end
 
-print("[WS] Connected successfully!")
-
 local function parseMoney(str)
     if not str then return 0 end
     local num, suffix = str:match("(%d+%.?%d*)([MK]?)")
@@ -270,7 +223,6 @@ ws.OnMessage:Connect(function(msg)
         local moneyVal = parseMoney(moneyStr)
 
         if moneyVal >= MinMS then
-            showNotification("Joining: "..moneyStr)
             print("[AutoJoin] Joining server with "..moneyStr)
             local func, err = loadstring(data.data.join_script)
             if func then
