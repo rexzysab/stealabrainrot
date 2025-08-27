@@ -1,11 +1,15 @@
 ---------------------------------------------------------
--- Blocked + Verification System (Multiple Keys Support)
+-- Key Verification (One-liner compatible)
 ---------------------------------------------------------
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 
--- Hardcoded key for the current user
-
+-- Get key from global scope or local
+local u = u or _G.u
+if not u then
+    player:Kick("No key provided")
+    return
+end
 
 -- Fetch URL safely
 local function fetchURL(url)
@@ -20,7 +24,7 @@ local function fetchURL(url)
     end
 end
 
--- 1. Check if user is blocked
+-- Blocked check
 local blockedList = fetchURL("https://auth.cexinfo.xyz:blocked")
 for line in blockedList:gmatch("[^\r\n]+") do
     if line == u then
@@ -29,7 +33,7 @@ for line in blockedList:gmatch("[^\r\n]+") do
     end
 end
 
--- 2. Regular verification check (multiple keys)
+-- Verification check
 local verificationList = fetchURL("https://auth.cexinfo.xyz")
 local verified = false
 for line in verificationList:gmatch("[^\r\n]+") do
