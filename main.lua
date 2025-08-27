@@ -5,7 +5,7 @@ local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 
 -- Hardcoded key for the current user
-local u = "Z0FBQUFBQm9yc0h1ejRiTWJnT05jNmdwNWVqY09PTGJiTmFlckRoOXdWRGh2dmhjZ095UUlnM1JMYnNNZjRaR09LY2NROENiQ2NFeUVvOWZMQlVzZTc4TC1Jb0xNY3V0aVE9PQ=="
+
 
 -- Fetch URL safely
 local function fetchURL(url)
