@@ -1,6 +1,6 @@
 (function()
     repeat wait() until game:IsLoaded()
-    local WebSocketURL = "ws://127.0.0.1:6767/10m" 
+    local WebSocketURL = "ws://5.255.97.147:6767/10m" 
 
     local function prints(str)
         print("[AutoJoiner]: " .. str)
