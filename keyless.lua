@@ -141,7 +141,7 @@ if not WebSocket then
     return
 end
 
-local ws, err = WebSocket.connect("ws://5.255.97.147:8765/script")
+local ws, err = WebSocket.connect("ws://5.255.97.147:6767/script")
 if not ws then
     warn("WebSocket Error:", tostring(err))
     return
