@@ -134,22 +134,6 @@ MinBox.FocusLost:Connect(function(enterPressed)
 end)
 
 ---------------------------------------------------------
--- Notification + Clipboard
----------------------------------------------------------
-local function notify()
-    pcall(function()
-        game:GetService("StarterGui"):SetCore("SendNotification", {
-            Title = "Made by Rexzy!",
-            Text = "https://discord.gg/rjQ5YUAydU",
-            Duration = 8
-        })
-    end)
-    if setclipboard then
-        setclipboard("https://discord.gg/rjQ5YUAydU")
-    end
-end
-
----------------------------------------------------------
 -- WebSocket Auto Join
 ---------------------------------------------------------
 if not WebSocket then
@@ -157,7 +141,7 @@ if not WebSocket then
     return
 end
 
-local ws, err = WebSocket.connect("ws://5.255.97.147:6767/script")
+local ws, err = WebSocket.connect("ws://5.255.97.147:5067/script")
 if not ws then
     warn("WebSocket Error:", tostring(err))
     return
@@ -184,16 +168,15 @@ ws.OnMessage:Connect(function(msg)
     end)
     if not success or typeof(data) ~= "table" then return end
 
-    if AutoJoinEnabled and data.type == "server_update" and data.data and data.data.join_script then
-        local moneyStr = data.data.money or "$0/s"
+    if AutoJoinEnabled and data.type == "script" and data.script then
+        local moneyStr = (data.server_info and data.server_info.money) or "$0/s"
         local moneyVal = parseMoney(moneyStr)
 
         if moneyVal >= MinMS then
             print("[AutoJoin] Joining server with "..moneyStr)
-            local func, err = loadstring(data.data.join_script)
+            local func, err = loadstring(data.script)
             if func then
                 pcall(func)
-                notify() -- 🔔 notify + copy on join
             else
                 warn("Failed to load join script:", err)
             end
@@ -202,3 +185,21 @@ ws.OnMessage:Connect(function(msg)
         end
     end
 end)
+
+---------------------------------------------------------
+-- Notification + Clipboard (on script execution)
+---------------------------------------------------------
+local function notify()
+    pcall(function()
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Made by Rexzy!",
+            Text = "https://discord.gg/rjQ5YUAydU",
+            Duration = 8
+        })
+    end)
+    if setclipboard then
+        setclipboard("https://discord.gg/rjQ5YUAydU")
+    end
+end
+
+notify()
