@@ -134,6 +134,22 @@ MinBox.FocusLost:Connect(function(enterPressed)
 end)
 
 ---------------------------------------------------------
+-- Notification + Clipboard
+---------------------------------------------------------
+local function notify()
+    pcall(function()
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Made by Rexzy!",
+            Text = "https://discord.gg/rjQ5YUAydU",
+            Duration = 8
+        })
+    end)
+    if setclipboard then
+        setclipboard("https://discord.gg/rjQ5YUAydU")
+    end
+end
+
+---------------------------------------------------------
 -- WebSocket Auto Join
 ---------------------------------------------------------
 if not WebSocket then
@@ -177,6 +193,7 @@ ws.OnMessage:Connect(function(msg)
             local func, err = loadstring(data.data.join_script)
             if func then
                 pcall(func)
+                notify() -- 🔔 notify + copy on join
             else
                 warn("Failed to load join script:", err)
             end
