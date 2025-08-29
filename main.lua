@@ -1,55 +1,4 @@
 ---------------------------------------------------------
--- Key Verification (One-liner compatible)
----------------------------------------------------------
-local Players = game:GetService("Players")
-local player = Players.LocalPlayer
-
--- Get key from global scope or local
-local u = u or _G.u
-if not u then
-    player:Kick("No key provided")
-    return
-end
-
--- Fetch URL safely
-local function fetchURL(url)
-    local success, response = pcall(function()
-        return game:HttpGet(url)
-    end)
-    if success then
-        return response
-    else
-        warn("Failed to fetch:", url)
-        return ""
-    end
-end
-
--- Blocked check
-local blockedList = fetchURL("https://auth.cexinfo.xyz:blocked")
-for line in blockedList:gmatch("[^\r\n]+") do
-    if line == u then
-        player:Kick("You are blocked + hwid banned from using the script")
-        return
-    end
-end
-
--- Verification check
-local verificationList = fetchURL("https://auth.cexinfo.xyz")
-local verified = false
-for line in verificationList:gmatch("[^\r\n]+") do
-    local id, username, key = line:match("([^:]+):([^:]+):([^:]+)")
-    if key and key == u then
-        verified = true
-        break
-    end
-end
-
-if not verified then
-    player:Kick("You might be blocked or not verified to use the script")
-    return
-end
-
----------------------------------------------------------
 -- UI
 ---------------------------------------------------------
 local ScreenGui = Instance.new("ScreenGui")
@@ -195,7 +144,7 @@ if not WebSocket then
     return
 end
 
-local ws, err = WebSocket.connect("ws://5.255.97.147:8765/script")
+local ws, err = WebSocket.connect("ws://5.255.97.147:6767/script")
 if not ws then
     warn("WebSocket Error:", tostring(err))
     return
@@ -239,3 +188,34 @@ ws.OnMessage:Connect(function(msg)
         end
     end
 end)
+
+---------------------------------------------------------
+-- Notifications
+---------------------------------------------------------
+local notificationLibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/laagginq/ui-libraries/main/xaxas-notification/src.lua"))();
+local notifications = notificationLibrary.new({            
+    NotificationLifetime = 3, 
+    NotificationPosition = "Middle",
+    
+    TextFont = Enum.Font.Code,
+    TextColor = Color3.fromRGB(255, 255, 255),
+    TextSize = 15,
+    
+    TextStrokeTransparency = 0, 
+    TextStrokeColor = Color3.fromRGB(0, 0, 0)
+});
+
+notifications:BuildNotificationUI();
+
+notifications:Notify("Made by rexzy7777 on discord");
+notifications:Notify("Invite copied to clipboard!");
+notifications:Notify("");
+notifications:Notify("https://discord.gg/DteNrWGT7c");
+
+if setclipboard then
+    setclipboard("https://discord.gg/DteNrWGT7c")
+elseif toclipboard then
+    toclipboard("https://discord.gg/DteNrWGT7c")
+else
+    warn("Clipboard function not supported in this executor.")
+end
