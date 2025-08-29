@@ -26,8 +26,6 @@ Title.Text = "Rexzy Joiner"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.Font = Enum.Font.GothamBold
 Title.TextSize = 18
-Title.TextXAlignment = Enum.TextXAlignment.Center
-Title.TextYAlignment = Enum.TextYAlignment.Center
 Title.Parent = MainFrame
 
 local TitleCorner = Instance.new("UICorner")
@@ -55,9 +53,10 @@ end
 -- Config System (per HWID)
 ---------------------------------------------------------
 local hwid = "unknown_hwid"
-if game:GetService("RbxAnalyticsService") then
+pcall(function()
     hwid = game:GetService("RbxAnalyticsService"):GetClientId()
-end
+end)
+
 local cfgFile = "autojoin_"..hwid..".json"
 
 local function loadConfig()
@@ -124,7 +123,7 @@ MinBox.TextSize = 14
 MinBox.ClearTextOnFocus = false
 MinBox.Parent = MainFrame
 
-MinBox.FocusLost:Connect(function(enterPressed)
+MinBox.FocusLost:Connect(function()
     local val = parseInput(MinBox.Text)
     if val then
         MinMS = val
@@ -137,18 +136,14 @@ MinBox.FocusLost:Connect(function(enterPressed)
 end)
 
 ---------------------------------------------------------
--- WebSocket Auto Join
+-- WebSocket Auto Join (with reconnect)
 ---------------------------------------------------------
 if not WebSocket then
     warn("Your executor does not support WebSocket.")
     return
 end
 
-local ws, err = WebSocket.connect("ws://5.255.97.147:6767/script")
-if not ws then
-    warn("WebSocket Error:", tostring(err))
-    return
-end
+local ws
 
 local function parseMoney(str)
     if not str then return 0 end
@@ -165,7 +160,7 @@ local function parseMoney(str)
     end
 end
 
-ws.OnMessage:Connect(function(msg)
+local function handleMessage(msg)
     local success, data = pcall(function()
         return HttpService:JSONDecode(msg)
     end)
@@ -187,35 +182,32 @@ ws.OnMessage:Connect(function(msg)
             print("[AutoJoin] Skipped server "..moneyStr.." < Min "..formatMoney(MinMS))
         end
     end
-end)
-
----------------------------------------------------------
--- Notifications
----------------------------------------------------------
-local notificationLibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/laagginq/ui-libraries/main/xaxas-notification/src.lua"))();
-local notifications = notificationLibrary.new({            
-    NotificationLifetime = 3, 
-    NotificationPosition = "Middle",
-    
-    TextFont = Enum.Font.Code,
-    TextColor = Color3.fromRGB(255, 255, 255),
-    TextSize = 15,
-    
-    TextStrokeTransparency = 0, 
-    TextStrokeColor = Color3.fromRGB(0, 0, 0)
-});
-
-notifications:BuildNotificationUI();
-
-notifications:Notify("Made by rexzy7777 on discord");
-notifications:Notify("Invite copied to clipboard!");
-notifications:Notify("");
-notifications:Notify("https://discord.gg/DteNrWGT7c");
-
-if setclipboard then
-    setclipboard("https://discord.gg/DteNrWGT7c")
-elseif toclipboard then
-    toclipboard("https://discord.gg/DteNrWGT7c")
-else
-    warn("Clipboard function not supported in this executor.")
 end
+
+local function connectWS()
+    local success, result = pcall(function()
+        return WebSocket.connect("ws://5.255.97.147:6767/script")
+    end)
+
+    if not success or not result then
+        warn("[AutoJoin] Failed to connect, retrying in 5s...")
+        task.wait(5)
+        return connectWS()
+    end
+
+    ws = result
+    print("[AutoJoin] Connected to WebSocket.")
+
+    ws.OnMessage:Connect(handleMessage)
+
+    ws.OnClose:Connect(function()
+        warn("[AutoJoin] Disconnected. Reconnecting...")
+        task.wait(5)
+        connectWS()
+    end)
+
+    return ws
+end
+
+-- Initial connect
+connectWS()
